@@ -5,11 +5,16 @@
         <% if user.id != current_user.id %>
           Name: <%= user.name %>
           <span class="profile-link">
-            <%= link_to 'See Profile', user_path(user.id), class: 'profile-link' %>
-            <%= button_to 'Add Friend', 
-              friendships_path(:friend_id => user.id,
-              :user_id => current_user),
-              :method => :post %>
+            <%= link_to 'See Profile', user_path(user.id),
+              class: 'profile-link' %>
+            <% unless list_pending(user) %>
+              <%= button_to 'Add Friend', 
+                friendships_path(:friend_id => user.id,
+                :user_id => current_user),
+                :method => :post %>
+            <% else %>
+              <p>Request Sent</p>
+            <% end %>
           </span>
         <% end %>
       </li>

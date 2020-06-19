@@ -5,18 +5,21 @@ class FriendshipsController < ApplicationController
 
   def create
     @friend = Friendship.create(friendship_params)
+    # dinamic redirect since is caled in different pages
+    redirect_back(fallback_location: root_path)
   end
 
-  # POST route
   def destroy
     @relationship = Friendship.find(params[:id])
+    if (@reverse_relationship = Friendship.find_by(user_id: @relationship.friend_id, friend_id: @relationship.user_id))
+      @reverse_relationship.destroy
+    end
     @relationship.destroy
     redirect_to friendships_path
   end
 
-  # PUT route
   def update
-    @friendship = Friendship.find_by(id: params[:id])
+    @friendship = Friendship.find(params[:id])
     @friendship.update(acceptance: true)
     redirect_to friendships_path
   end

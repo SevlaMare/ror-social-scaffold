@@ -20,16 +20,7 @@ class PostsController < ApplicationController
   private
 
   def timeline_posts
-    all_my_friends = [current_user.id]
-
-    current_user.friendships.each do |c|
-      all_my_friends << c.friend_id
-    end
-
-    Friendship.all.each do |c|
-      all_my_friends << c.user_id if c.friend_id == current_user.id
-    end
-    @timeline_posts ||= Post.where(user_id: all_my_friends).ordered_by_most_recent
+    @timeline_posts ||= current_user.friends_and_own_posts
   end
 
   def post_params
