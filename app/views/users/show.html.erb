@@ -1,5 +1,15 @@
 <section class="user-section">
   <h2><%= "Name: #{@user.name}" %></h2>
+  <% if @user != current_user %>
+    <% unless list_pending(@user) %>
+      <%= button_to 'Add Friend', 
+        friendships_path(:friend_id => @user,
+        :user_id => current_user),
+        :method => :post %>
+    <% else %>
+      <p>Waiting Friendship</p>
+    <% end %>
+  <% end %>
   <article class="timeline">
     <h3>Recent posts:</h3>
     <ul class="posts">
